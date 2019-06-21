@@ -96,8 +96,6 @@ public class PinotControllerModeTest extends ControllerTest {
     _controllerStarter = null;
   }
 
-  // TODO: enable it after removing HelixControllerLeadershipManager which requires both CONTROLLER and PARTICIPANT
-  //       HelixManager
   @Test
   public void testPinotOnlyController()
       throws Exception {

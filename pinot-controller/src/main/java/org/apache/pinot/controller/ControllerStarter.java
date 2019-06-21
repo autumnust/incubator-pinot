@@ -37,6 +37,7 @@ import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.io.FileUtils;
 import org.apache.helix.HelixManager;
 import org.apache.helix.SystemPropertyKeys;
+import org.apache.helix.api.listeners.ControllerChangeListener;
 import org.apache.helix.task.TaskDriver;
 import org.apache.pinot.common.Utils;
 import org.apache.pinot.common.metrics.ControllerMeter;
@@ -249,6 +250,10 @@ public class ControllerStarter {
 
     // Get lead controller manager from resource manager.
     _leadControllerManager = _helixResourceManager.getLeadControllerManager();
+
+    LOGGER.info("Registering helix controller listener");
+    helixParticipantManager.addControllerListener(
+        (ControllerChangeListener) changeContext -> _leadControllerManager.onHelixControllerChange());
 
     LOGGER.info("Starting task resource manager");
     _helixTaskResourceManager = new PinotHelixTaskResourceManager(new TaskDriver(helixParticipantManager));
